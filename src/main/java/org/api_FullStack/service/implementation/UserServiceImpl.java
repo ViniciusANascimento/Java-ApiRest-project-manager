@@ -25,6 +25,9 @@ public class UserServiceImpl implements UserService {
         if(userRepository.existsByEmail(userToCreate.getEmail())){
             throw new IllegalArgumentException("Usuário já existente, faça o Login.");
         }
+        if(userToCreate.getPassword().length() < 6){
+            throw new IllegalArgumentException("Senha deve ser maior que 6 caracteres.");
+        }
         return userRepository.save(userToCreate);
     }
 }
