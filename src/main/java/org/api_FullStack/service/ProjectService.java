@@ -1,0 +1,8 @@
+package org.api_FullStack.service;
+
+import org.api_FullStack.model.Project;
+
+public interface ProjectService {
+    Project findById(Long id);
+    Project create(Project projectCreate);
+}
