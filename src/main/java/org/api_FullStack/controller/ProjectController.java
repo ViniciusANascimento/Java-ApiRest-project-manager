@@ -9,6 +9,7 @@ import java.util.NoSuchElementException;
 
 @RestController
 @RequestMapping("/project")
+@CrossOrigin(origins = "http:127.0.0.1:5500")
 public class ProjectController {
 
     private final ProjectService projectService;
@@ -17,14 +18,13 @@ public class ProjectController {
         this.projectService = projectService;
     }
 
-    @CrossOrigin(origins = "http:127.0.0.1:5500")
     @GetMapping("{id}")
     public ResponseEntity<Project> findById(@PathVariable Long id){
         var project = projectService.findById(id);
         return ResponseEntity.ok(project);
     }
     //Criado desvio para quando utilizado em localhost
-    @CrossOrigin(origins = "http:127.0.0.1:5500")
+
     @PostMapping()
     public ResponseEntity<?> save(@RequestBody Project projectToCreate){
         //Criado no modo TryCatch para que a mensagem de retorno seja reaproveitavel.
@@ -37,4 +37,18 @@ public class ProjectController {
             return new ResponseEntity<>("Internal Server Error", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @PutMapping({"/{id}"})
+    public ResponseEntity<?> updateProject(@PathVariable("id") Long projectId, @RequestBody Project projectToUpdate){
+        try {
+            projectService.update(projectId,projectToUpdate);
+            return new ResponseEntity<>(projectToUpdate,HttpStatus.OK);
+        }catch (NoSuchElementException e ){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        } catch (Exception e){
+            return new ResponseEntity<>("Internal Server Error", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+
 }

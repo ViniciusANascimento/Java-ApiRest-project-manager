@@ -47,4 +47,28 @@ public class ProjectServiceImpl implements ProjectService {
 
         return projectRepository.save(projectToCreate);
     }
+
+    @Override
+    public Project update(Long projectID, Project projectUpdate) {
+        if(!projectRepository.existsById(projectUpdate.getId())){
+            throw new NoSuchElementException("Projeto não existe no sistema");
+        }
+        //Garantir que atualize o mesmo projeto que esta sendo passado
+        projectUpdate.setId(projectID);
+        //salvar o projeto.
+        return projectRepository.save(projectUpdate);
+    }
+
+    @Override
+    public void delete(Long id) {
+
+    }
+
+    private boolean verifyExistenceProject(Project project) {
+        if(!projectRepository.existsById(project.getId())){
+            //throw new NoSuchElementException("Projeto não existe no sistema");
+            return false;
+        }
+        return true;
+    }
 }
