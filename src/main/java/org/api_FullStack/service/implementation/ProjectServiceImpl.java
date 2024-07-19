@@ -5,6 +5,7 @@ import org.api_FullStack.model.acess.User;
 import org.api_FullStack.repository.ProjectRepository;
 import org.api_FullStack.repository.UserRepository;
 import org.api_FullStack.service.ProjectService;
+import org.springframework.beans.PropertyEditorRegistrar;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -60,15 +61,13 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public void delete(Long id) {
-
-    }
-
-    private boolean verifyExistenceProject(Project project) {
-        if(!projectRepository.existsById(project.getId())){
-            //throw new NoSuchElementException("Projeto não existe no sistema");
-            return false;
+    public void delete(Long id, Project projectToDelete) {
+        //Garanto que o projeto que esta sendo passado é o que vai ser apagado.
+        projectToDelete.setId(id);
+        //Verifico novamente se o projeto existe.
+        if(!projectRepository.existsById(projectToDelete.getId())){
+            throw new NoSuchElementException("Projeto não existe no sistema");
         }
-        return true;
+        projectRepository.delete(projectToDelete);
     }
 }

@@ -19,36 +19,46 @@ public class ProjectController {
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<Project> findById(@PathVariable Long id){
+    public ResponseEntity<Project> findById(@PathVariable Long id) {
         var project = projectService.findById(id);
         return ResponseEntity.ok(project);
     }
     //Criado desvio para quando utilizado em localhost
 
     @PostMapping()
-    public ResponseEntity<?> save(@RequestBody Project projectToCreate){
+    public ResponseEntity<?> save(@RequestBody Project projectToCreate) {
         //Criado no modo TryCatch para que a mensagem de retorno seja reaproveitavel.
         try {
             var projectCreated = projectService.create(projectToCreate);
             return new ResponseEntity<>(projectCreated, HttpStatus.CREATED);
-        } catch (NoSuchElementException e ){
+        } catch (NoSuchElementException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-        } catch (Exception e){
+        } catch (Exception e) {
             return new ResponseEntity<>("Internal Server Error", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
-    @PutMapping({"/{id}"})
-    public ResponseEntity<?> updateProject(@PathVariable("id") Long projectId, @RequestBody Project projectToUpdate){
+    @PutMapping({"{id}"})
+    public ResponseEntity<?> updateProject(@PathVariable("id") Long projectId, @RequestBody Project projectToUpdate) {
         try {
-            projectService.update(projectId,projectToUpdate);
-            return new ResponseEntity<>(projectToUpdate,HttpStatus.OK);
-        }catch (NoSuchElementException e ){
+            projectService.update(projectId, projectToUpdate);
+            return new ResponseEntity<>(projectToUpdate, HttpStatus.OK);
+        } catch (NoSuchElementException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-        } catch (Exception e){
+        } catch (Exception e) {
             return new ResponseEntity<>("Internal Server Error", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
-
+    @DeleteMapping("{id}")
+    public ResponseEntity<?> delete(@PathVariable Long id, Project project) {
+        try {
+            projectService.delete(id, project);
+            return new ResponseEntity<>(project, HttpStatus.OK);
+        } catch (NoSuchElementException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Internal Server Error", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }
