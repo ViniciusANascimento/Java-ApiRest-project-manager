@@ -14,13 +14,10 @@ public class Project {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-
+    //Carregar o codigo do usuario que vai estar logado no sistema.
+    private long userID;
     private String titulo;
     private String descricao;
     private LocalDate date;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn("tb_user.id" = userCode)
-    private int userCode;
 
 }

@@ -10,7 +10,6 @@ import lombok.Setter;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
     private long id;
 
     private String username;
