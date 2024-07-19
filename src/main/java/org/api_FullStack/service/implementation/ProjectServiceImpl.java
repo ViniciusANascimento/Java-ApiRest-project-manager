@@ -1,11 +1,10 @@
 package org.api_FullStack.service.implementation;
 
 import org.api_FullStack.model.Project;
-import org.api_FullStack.model.acess.User;
+import org.api_FullStack.model.User;
 import org.api_FullStack.repository.ProjectRepository;
 import org.api_FullStack.repository.UserRepository;
 import org.api_FullStack.service.ProjectService;
-import org.springframework.beans.PropertyEditorRegistrar;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

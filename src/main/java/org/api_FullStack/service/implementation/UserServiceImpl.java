@@ -1,6 +1,6 @@
 package org.api_FullStack.service.implementation;
 
-import org.api_FullStack.model.acess.User;
+import org.api_FullStack.model.User;
 import org.api_FullStack.repository.UserRepository;
 import org.api_FullStack.service.UserService;
 import org.springframework.stereotype.Service;

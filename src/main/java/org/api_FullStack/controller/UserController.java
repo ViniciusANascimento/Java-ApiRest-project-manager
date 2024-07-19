@@ -1,14 +1,12 @@
 package org.api_FullStack.controller;
 
 
-import org.api_FullStack.model.acess.User;
+import org.api_FullStack.model.User;
 import org.api_FullStack.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.net.URI;
 import java.util.NoSuchElementException;
 
 @RestController

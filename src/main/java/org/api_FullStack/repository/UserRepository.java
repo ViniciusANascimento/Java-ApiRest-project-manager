@@ -1,6 +1,6 @@
 package org.api_FullStack.repository;
 
-import org.api_FullStack.model.acess.User;
+import org.api_FullStack.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

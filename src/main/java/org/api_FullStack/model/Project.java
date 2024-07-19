@@ -3,7 +3,6 @@ package org.api_FullStack.model;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import org.api_FullStack.model.acess.User;
 
 import java.time.LocalDate;
 

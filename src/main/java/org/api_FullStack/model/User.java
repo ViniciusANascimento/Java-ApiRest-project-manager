@@ -1,4 +1,4 @@
-package org.api_FullStack.model.acess;
+package org.api_FullStack.model;
 
 import jakarta.persistence.*;
 import lombok.Getter;
