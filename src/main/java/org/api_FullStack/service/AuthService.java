@@ -27,7 +27,12 @@ public class AuthService {
         this.userService = userService;
     }
 
-
+    /**
+    * Metodo de realizar login
+    * Entrar uma Entidade LoginRequest
+    * Retorno de Acesso liberado ou não.
+     * @param login  Entidade Login
+    * */
     public String login(LoginRequest login) throws AuthenticationException {
         User userLocalizado;
         if(login.getPassword() ==null){
@@ -49,10 +54,11 @@ public class AuthService {
             password = encriptaDecriptaRSA.cript(login.getPassword());
             */
             String senhaDescript = userLocalizado.getPassword();
-            System.out.println(senhaDescript.getBytes());
-            password = encriptaDecriptaRSA.descript(senhaDescript.getBytes());
-            if(login.getPassword() == password){
-                return "token_gerado";
+            password = encriptaDecriptaRSA.descript(senhaDescript);
+            System.out.println(password);
+            System.out.println(login.getPassword());
+            if(login.getPassword().equals(password)){
+                return "Acesso Liberadoo";
             }else {
                 throw new AuthenticationException("Credenciais inválidas!");
             }

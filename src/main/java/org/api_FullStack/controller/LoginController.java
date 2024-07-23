@@ -15,18 +15,24 @@ import javax.naming.AuthenticationException;
 @RequestMapping("/auth")
 public class LoginController {
 
-    @Autowired
-    private AuthService authService;
+
+    private final AuthService authService;
+
+    public LoginController(AuthService authService) {
+        this.authService = authService;
+    }
 
     @PostMapping("/{login}")
-    public ResponseEntity<?> login(LoginRequest loginRequest) {
+    public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
         try {
-            String token = authService.login(loginRequest);
-            return ResponseEntity.ok(new AuthResponse(token));
+            var token = authService.login(loginRequest);
+            return new ResponseEntity<>(token, HttpStatus.OK);
         } catch (AuthenticationException e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Informações de Login inválidas.");
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Internal server error");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro interno.");
         }
     }
 }
+
+
