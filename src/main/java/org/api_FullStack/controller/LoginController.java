@@ -1,9 +1,7 @@
 package org.api_FullStack.controller;
 
-import org.api_FullStack.model.AuthResponse;
 import org.api_FullStack.model.LoginRequest;
 import org.api_FullStack.service.AuthService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -32,6 +30,16 @@ public class LoginController {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro interno.");
         }
+    }
+    @GetMapping("/{emailRecovery}")
+    public ResponseEntity<?> recovery(@PathVariable String emailRecovery) {
+        try {
+            var userRecovery = authService.recoveryPassword(emailRecovery);
+            return new ResponseEntity<>(userRecovery, HttpStatus.OK);
+        }catch (AuthenticationException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Usuário não localizado.");
+        }
+
     }
 }
 

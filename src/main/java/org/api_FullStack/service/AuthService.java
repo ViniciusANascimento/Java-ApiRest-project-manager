@@ -6,8 +6,8 @@ import org.api_FullStack.repository.UserRepository;
 import org.api_FullStack.service.cript.EncriptaDecriptaRSA;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.servlet.resource.ResourceUrlProvider;
 
 import javax.naming.AuthenticationException;
 
@@ -20,11 +20,13 @@ public class AuthService {
 
     private final UserRepository userRepository;
     private final UserService userService;
+    private final ResourceUrlProvider mvcResourceUrlProvider;
 
-    public AuthService(EncriptaDecriptaRSA encriptaDecriptaRSA, UserRepository userRepository, UserService userService) {
+    public AuthService(EncriptaDecriptaRSA encriptaDecriptaRSA, UserRepository userRepository, UserService userService, ResourceUrlProvider mvcResourceUrlProvider) {
         this.encriptaDecriptaRSA = encriptaDecriptaRSA;
         this.userRepository = userRepository;
         this.userService = userService;
+        this.mvcResourceUrlProvider = mvcResourceUrlProvider;
     }
 
     /**
@@ -34,16 +36,11 @@ public class AuthService {
      * @param login  Entidade Login
     * */
     public String login(LoginRequest login) throws AuthenticationException {
-        User userLocalizado;
-        if(login.getPassword() ==null){
+
+        if(login.getPassword() ==null || login.getPassword().equals("")){
             throw new AuthenticationException("Senha inválida.");
         }
-        String userPasswordRequest;
-        if (userRepository.existsByEmail(login.getEmail())) {
-            userLocalizado = userRepository.findByEmail(login.getEmail());
-        }else{
-            throw new AuthenticationException("Email inválido.");
-        }
+        User userPasswordRequest = verificarCadastrado(login.getEmail());
 
         String password;
         try {
@@ -53,7 +50,7 @@ public class AuthService {
 
             password = encriptaDecriptaRSA.cript(login.getPassword());
             */
-            String senhaDescript = userLocalizado.getPassword();
+            String senhaDescript = userPasswordRequest.getPassword();
             password = encriptaDecriptaRSA.descript(senhaDescript);
             System.out.println(password);
             System.out.println(login.getPassword());
@@ -66,4 +63,27 @@ public class AuthService {
             throw new AuthenticationException(e.getMessage());
         }
     }
+    public String recoveryPassword(String email) throws AuthenticationException {
+        try {
+            User userRecovery = verificarCadastrado(email);
+            String password = encriptaDecriptaRSA.descript(userRecovery.getPassword());;
+            return password;
+        }catch (AuthenticationException e){
+            throw new AuthenticationException(e.getMessage());
+        }catch (Exception e){
+            throw new AuthenticationException(e.getMessage());
+        }
+
+    }
+
+    private User verificarCadastrado (String email) throws AuthenticationException {
+        User userLocalizado;
+        if (!userRepository.existsByEmail(email)){
+            throw new AuthenticationException("Usuário não localizado.");
+        }else{
+            userLocalizado = userRepository.findByEmail(email);
+        }
+        return userLocalizado;
+    }
+
 }
