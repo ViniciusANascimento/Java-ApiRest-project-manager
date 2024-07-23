@@ -10,8 +10,9 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.naming.AuthenticationException;
 
+@CrossOrigin(origins = "http:127.0.0.1:5500")
 @RestController
-@RequestMapping("/{auth}")
+@RequestMapping("/auth")
 public class LoginController {
 
     @Autowired
@@ -20,7 +21,7 @@ public class LoginController {
     @PostMapping("/{login}")
     public ResponseEntity<?> login(LoginRequest loginRequest) {
         try {
-            String token = authService.login(loginRequest.getEmail(), loginRequest.getPassword());
+            String token = authService.login(loginRequest);
             return ResponseEntity.ok(new AuthResponse(token));
         } catch (AuthenticationException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");

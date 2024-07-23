@@ -142,8 +142,9 @@ public class EncriptaDecriptaRSA {
         return senhaCriptografada;
     }
 
-    public void descript(byte[] criptPassword) throws Exception {
+    public String descript(byte[] criptPassword) throws Exception {
         ObjectInputStream objectInputStream = null;
+        String senhaCriptografada;
         try {
             // Decriptografa a Mensagem usando a Chave Pirvada
             objectInputStream = new ObjectInputStream(new FileInputStream(PATH_CHAVE_PRIVADA));
@@ -152,10 +153,12 @@ public class EncriptaDecriptaRSA {
              */
             final PrivateKey chavePrivada = (PrivateKey) objectInputStream.readObject();
             final String textoPuro = decriptografa(criptPassword, chavePrivada);
+            senhaCriptografada = textoPuro;
 
         }catch (Exception e){
             throw new Exception(e.getMessage());
         }
+        return senhaCriptografada;
     }
 
     /**
