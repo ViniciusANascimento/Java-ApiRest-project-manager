@@ -1,11 +1,10 @@
 package org.api_FullStack.service.cript;
 
+import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.PrivateKey;
@@ -122,6 +121,43 @@ public class EncriptaDecriptaRSA {
         return new String(dectyptedText);
     }
 
+    public String cript(String senha) throws Exception {
+        ObjectInputStream objectInputStream = null;
+        String senhaCriptografada;
+        try {
+
+            //Criptografando a senha.
+            objectInputStream = new ObjectInputStream(new FileInputStream(PATH_CHAVE_PUBLICA));
+            /*
+             *Realiza a Leitura do arquivo de chave publica e carrega para a variavel chavePublica.
+             */
+            final PublicKey chavePublica = (PublicKey) objectInputStream.readObject();
+            final byte[] textoCriptografado = criptografa(senha, chavePublica);
+            senhaCriptografada = textoCriptografado.toString();
+
+
+        }catch (Exception e){
+            throw new Exception(e.getMessage());
+        }
+        return senhaCriptografada;
+    }
+
+    public void descript(byte[] criptPassword) throws Exception {
+        ObjectInputStream objectInputStream = null;
+        try {
+            // Decriptografa a Mensagem usando a Chave Pirvada
+            objectInputStream = new ObjectInputStream(new FileInputStream(PATH_CHAVE_PRIVADA));
+            /*
+             *Realiza a Leitura do arquivo de chave publica e carrega para a variavel chavePublica.
+             */
+            final PrivateKey chavePrivada = (PrivateKey) objectInputStream.readObject();
+            final String textoPuro = decriptografa(criptPassword, chavePrivada);
+
+        }catch (Exception e){
+            throw new Exception(e.getMessage());
+        }
+    }
+
     /**
      * Testa o Algoritmo
      */
@@ -154,12 +190,11 @@ public class EncriptaDecriptaRSA {
             System.out.println("Mensagem Original: " + msgOriginal);
             System.out.println("Mensagem Criptografada: " +textoCriptografado.toString());
             System.out.println("Mensagem Decriptografada: " + textoPuro);
-            /
+
             Mensagem Original: Exemplo de mensagem
             Mensagem Criptografada: [B@9ee4e7
             Mensagem Decriptografada: Exemplo de mensagem
-            /
-     */
+
         } catch (Exception e) {
             e.printStackTrace();
         }

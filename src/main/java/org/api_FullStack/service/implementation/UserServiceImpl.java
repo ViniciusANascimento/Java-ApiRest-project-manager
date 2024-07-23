@@ -6,11 +6,6 @@ import org.api_FullStack.repository.UserRepository;
 import org.api_FullStack.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.io.FileInputStream;
-import java.io.ObjectInputStream;
-import java.security.PrivateKey;
-import java.security.PublicKey;
 import java.util.NoSuchElementException;
 
 @Service
@@ -40,7 +35,7 @@ public class UserServiceImpl implements UserService {
         String novaSenha = "";
         //Carregar a senha passada para a criação do usuario.
         try {
-            novaSenha = cript(userToCreate.getPassword());
+            novaSenha = encriptaDecriptaRSA.cript(userToCreate.getPassword());
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -50,40 +45,5 @@ public class UserServiceImpl implements UserService {
         return userRepository.save(userToCreate);
     }
 
-    private String cript(String senha) throws Exception {
-        ObjectInputStream objectInputStream = null;
-        String senhaCriptografada;
-        try {
 
-            //Criptografando a senha.
-            objectInputStream = new ObjectInputStream(new FileInputStream(encriptaDecriptaRSA.PATH_CHAVE_PUBLICA));
-            /*
-            *Realiza a Leitura do arquivo de chave publica e carrega para a variavel chavePublica.
-             */
-            final PublicKey chavePublica = (PublicKey) objectInputStream.readObject();
-            final byte[] textoCriptografado = encriptaDecriptaRSA.criptografa(senha, chavePublica);
-            senhaCriptografada = textoCriptografado.toString();
-
-
-        }catch (Exception e){
-            throw new Exception(e.getMessage());
-        }
-        return senhaCriptografada;
-    }
-
-    private void descript(byte[] criptPassword) throws Exception {
-        ObjectInputStream objectInputStream = null;
-        try {
-            // Decriptografa a Mensagem usando a Chave Pirvada
-            objectInputStream = new ObjectInputStream(new FileInputStream(encriptaDecriptaRSA.PATH_CHAVE_PRIVADA));
-            /*
-             *Realiza a Leitura do arquivo de chave publica e carrega para a variavel chavePublica.
-             */
-            final PrivateKey chavePrivada = (PrivateKey) objectInputStream.readObject();
-            final String textoPuro = encriptaDecriptaRSA.decriptografa(criptPassword, chavePrivada);
-
-        }catch (Exception e){
-            throw new Exception(e.getMessage());
-        }
-    }
 }

@@ -8,7 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.NoSuchElementException;
-
+@CrossOrigin(origins = "http:127.0.0.1:5500")
 @RestController
 @RequestMapping("/users")
 public class UserController {
@@ -20,13 +20,12 @@ public class UserController {
         this.userService = userService;
     }
 
-    @CrossOrigin(origins = "http:127.0.0.1:5500")
-    @GetMapping("/{id}")
+    /*@GetMapping("/{id}")
     public ResponseEntity<User> findById(@PathVariable Long id){
         var user = userService.findById(id);
         return ResponseEntity.ok(user);
-    }
-    @CrossOrigin(origins = "http:127.0.0.1:5500")
+    }*/
+
     @PostMapping()
     public ResponseEntity<?> create(@RequestBody User userToCreate){
        try {
