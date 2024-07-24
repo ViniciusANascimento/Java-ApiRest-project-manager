@@ -1,0 +1,1 @@
+web: java -jar build/libs/api-FullStack-0.0.1-SNAPSHOT.jar
