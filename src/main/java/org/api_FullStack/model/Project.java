@@ -8,7 +8,7 @@ import java.time.LocalDate;
 
 @Getter
 @Setter
-@Entity(name = "tb_agenda")
+@Entity(name = "tb_project")
 public class Project {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
