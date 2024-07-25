@@ -15,8 +15,8 @@ public class EncriptaDecriptaRSA {
 
     public static final String ALGORITHM = "RSA";
 
-    public static final String PATH_CHAVE_PRIVADA = "C:/keys/private.key";
-    public static final String PATH_CHAVE_PUBLICA = "C:/keys/public.key";
+    public static final String PATH_CHAVE_PRIVADA = "src/main/java/org/api_FullStack/service/cript/files/private.key";
+    public static final String PATH_CHAVE_PUBLICA = "src/main/java/org/api_FullStack/service/cript/files/public.key";
 
     public static void geraChave() {
         try {
