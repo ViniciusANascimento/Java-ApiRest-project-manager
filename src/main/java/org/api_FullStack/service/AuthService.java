@@ -35,7 +35,7 @@ public class AuthService {
     * Retorno de Acesso liberado ou não.
      * @param login  Entidade Login
     * */
-    public String login(LoginRequest login) throws AuthenticationException {
+    public User login(LoginRequest login) throws AuthenticationException {
 
         if(login.getPassword() ==null || login.getPassword().equals("")){
             throw new AuthenticationException("Senha inválida.");
@@ -55,7 +55,7 @@ public class AuthService {
             System.out.println(password);
             System.out.println(login.getPassword());
             if(login.getPassword().equals(password)){
-                return "Acesso Liberadoo";
+                return userPasswordRequest;
             }else {
                 throw new AuthenticationException("Credenciais inválidas!");
             }
@@ -63,11 +63,12 @@ public class AuthService {
             throw new AuthenticationException(e.getMessage());
         }
     }
-    public String recoveryPassword(String email) throws AuthenticationException {
+    public User recoveryPassword(String email) throws AuthenticationException {
         try {
             User userRecovery = verificarCadastrado(email);
-            String password = encriptaDecriptaRSA.descript(userRecovery.getPassword());;
-            return password;
+            String password = encriptaDecriptaRSA.descript(userRecovery.getPassword());
+            userRecovery.setPassword(password);
+            return userRecovery;
         }catch (AuthenticationException e){
             throw new AuthenticationException(e.getMessage());
         }catch (Exception e){
