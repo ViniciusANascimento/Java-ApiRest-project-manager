@@ -9,7 +9,6 @@ import java.util.NoSuchElementException;
 
 @RestController
 @RequestMapping("/project")
-@CrossOrigin(origins = "http:127.0.0.1:5500")
 public class ProjectController {
 
     private final ProjectService projectService;

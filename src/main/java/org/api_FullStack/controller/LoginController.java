@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.naming.AuthenticationException;
 
-@CrossOrigin(origins = "http:127.0.0.1:5500")
 @RestController
 @RequestMapping("/auth")
 public class LoginController {
