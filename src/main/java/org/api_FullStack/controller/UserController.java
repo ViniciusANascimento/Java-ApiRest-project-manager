@@ -9,6 +9,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.NoSuchElementException;
 @RestController
+/*
+Adicionado o CrossOrigin para testar em localhost a interação com o front-end
+ */
+@CrossOrigin(origins = "http://127.0.0.1:5500")
 @RequestMapping("/users")
 public class UserController {
 
