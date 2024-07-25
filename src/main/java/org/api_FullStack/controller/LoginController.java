@@ -18,7 +18,7 @@ public class LoginController {
     public LoginController(AuthService authService) {
         this.authService = authService;
     }
-    @CrossOrigin(origins = "http://127.0.0.1:5500")
+    @CrossOrigin
     @PostMapping("/{login}")
     public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
         try {
@@ -30,7 +30,7 @@ public class LoginController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro interno.");
         }
     }
-    @CrossOrigin(origins = "http://127.0.0.1:5500")
+    @CrossOrigin
     @GetMapping("/{emailRecovery}")
     public ResponseEntity<?> recovery(@PathVariable String emailRecovery) {
         try {
