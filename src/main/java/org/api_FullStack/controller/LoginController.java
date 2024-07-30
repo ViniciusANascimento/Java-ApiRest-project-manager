@@ -19,7 +19,7 @@ public class LoginController {
         this.authService = authService;
     }
     @CrossOrigin
-    @PostMapping("/{login}")
+    @PostMapping("/")
     public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
         try {
             var token = authService.login(loginRequest);

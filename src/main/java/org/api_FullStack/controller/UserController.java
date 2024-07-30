@@ -6,8 +6,8 @@ import org.api_FullStack.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.NoSuchElementException;
+
 @RestController
 @RequestMapping("/users")
 public class UserController {
@@ -19,8 +19,20 @@ public class UserController {
         this.userService = userService;
     }
 
+    @CrossOrigin
+    @GetMapping("/{id}")
+    public ResponseEntity<User> getUser(@PathVariable long id) {
+        try {
+            var userFound = userService.findById(id);
+            return new ResponseEntity<>(userFound, HttpStatus.OK);
+        }catch (NoSuchElementException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 
-
+    @CrossOrigin
     @PostMapping()
     public ResponseEntity<?> create(@RequestBody User userToCreate){
        try {

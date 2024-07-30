@@ -1,13 +1,16 @@
 package org.api_FullStack.service.implementation;
 
+import org.api_FullStack.controller.ProjectController;
 import org.api_FullStack.model.Project;
 import org.api_FullStack.model.User;
 import org.api_FullStack.repository.ProjectRepository;
 import org.api_FullStack.repository.UserRepository;
 import org.api_FullStack.service.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
@@ -32,6 +35,11 @@ public class ProjectServiceImpl implements ProjectService {
                 .findById(id)
                 .orElseThrow(NoSuchElementException::new);
     }
+
+    @Override
+    public  List<Project> findByUserId(Long idUser){
+        return projectRepository.findProjectsByUserId(idUser);
+    }
     //Consultar se existe o projeto, caso não tenha ele irá criar.
     @Override
     public Project create(Project projectToCreate) {
@@ -49,12 +57,10 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public Project update(Long projectID, Project projectUpdate) {
-        if(!projectRepository.existsById(projectUpdate.getId())){
+    public Project update(Project projectUpdate) {
+        if(!projectRepository.existsById(projectUpdate.getId())) {
             throw new NoSuchElementException("Projeto não existe no sistema");
         }
-        //Garantir que atualize o mesmo projeto que esta sendo passado
-        projectUpdate.setId(projectID);
         //salvar o projeto.
         return projectRepository.save(projectUpdate);
     }

@@ -5,7 +5,11 @@ import org.api_FullStack.service.ProjectService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Arrays;
+import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 
 @RestController
@@ -18,13 +22,20 @@ public class ProjectController {
         this.projectService = projectService;
     }
 
+    @CrossOrigin
     @GetMapping("{id}")
-    public ResponseEntity<Project> findById(@PathVariable Long id) {
-        var project = projectService.findById(id);
-        return ResponseEntity.ok(project);
+    public ResponseEntity<?> findbyUserId(@PathVariable long id) {
+        try {
+            List<Project> projectsFounded = projectService.findByUserId(id);
+            return new ResponseEntity<>(projectsFounded, HttpStatus.CREATED);
+        } catch (NoSuchElementException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Internal Server Error", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
-    //Criado desvio para quando utilizado em localhost
 
+    @CrossOrigin
     @PostMapping()
     public ResponseEntity<?> save(@RequestBody Project projectToCreate) {
         //Criado no modo TryCatch para que a mensagem de retorno seja reaproveitavel.
@@ -38,10 +49,11 @@ public class ProjectController {
         }
     }
 
-    @PutMapping({"{id}"})
-    public ResponseEntity<?> updateProject(@PathVariable("id") Long projectId, @RequestBody Project projectToUpdate) {
+    @CrossOrigin
+    @PutMapping()
+    public ResponseEntity<?> updateProject(@RequestBody Project projectToUpdate) {
         try {
-            projectService.update(projectId, projectToUpdate);
+            projectService.update(projectToUpdate);
             return new ResponseEntity<>(projectToUpdate, HttpStatus.OK);
         } catch (NoSuchElementException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
@@ -50,6 +62,7 @@ public class ProjectController {
         }
     }
 
+    @CrossOrigin
     @DeleteMapping("{id}")
     public ResponseEntity<?> delete(@PathVariable Long id, Project project) {
         try {
