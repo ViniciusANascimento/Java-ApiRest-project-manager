@@ -48,8 +48,9 @@ public class ProjectServiceImpl implements ProjectService {
             throw new NoSuchElementException("Já existe projeto com esse código.");
         }
         //Verifico se o codigo de usuario que esta sendo passado para salvar no projeto, existe.
-        Optional<User> userOptional = userRepository.findById(projectToCreate.getUserID());
-        if(!userOptional.isPresent()){
+        User userOptional = userRepository.findById(projectToCreate.getUserID());
+        //Optional<User> userOptional = userRepository.findById(projectToCreate.getUserID());
+        if(userOptional == null){
             throw new NoSuchElementException("Usuário não cadastrado no sistema");
         }
 

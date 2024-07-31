@@ -4,7 +4,7 @@ import org.api_FullStack.model.User;
 
 public interface UserService {
 
-    User findById(Long id);
+    User findById(long id);
 
     User create(User userToCreate);
 }

@@ -16,12 +16,27 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
 
-    public UserServiceImpl(UserRepository userRepository) {
+    public UserServiceImpl(EncriptaDecriptaRSA encriptaDecriptaRSA, UserRepository userRepository) {
+        this.encriptaDecriptaRSA = encriptaDecriptaRSA;
         this.userRepository = userRepository;
     }
     @Override
-    public User findById(Long id) {
-        return userRepository.findById(id).orElseThrow(NoSuchElementException::new);
+    public User findById(long id){
+        /*if(userRepository.findById(id) != null) {
+            User userFound = userRepository.findByEmail(email);
+            String passwordCript = userFound.getPassword();
+            String passwordDescript;
+            try {
+                 passwordDescript = encriptaDecriptaRSA.descript(passwordCript);
+                 userFound.setPassword(passwordDescript);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+            return userFound;
+        }else {
+            throw new NoSuchElementException("Usuario não encontrado");
+        }*/
+        return userRepository.findById(id);
     }
 
     @Override
