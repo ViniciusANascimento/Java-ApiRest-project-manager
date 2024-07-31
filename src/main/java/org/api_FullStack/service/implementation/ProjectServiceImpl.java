@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -53,7 +54,8 @@ public class ProjectServiceImpl implements ProjectService {
         if(userOptional == null){
             throw new NoSuchElementException("Usuário não cadastrado no sistema");
         }
-
+        LocalDateTime now = LocalDateTime.now();
+        projectToCreate.setDate(now);
         return projectRepository.save(projectToCreate);
     }
 
